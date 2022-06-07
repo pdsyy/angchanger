@@ -1,0 +1,24 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+.main{
+  max-width: 800px;
+  margin: 0px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main div{
+  margin: 0px 15px;
+}
+header{
+  top:0px;
+  width: 100%;
+  text-align: center;
+
+}
+header span{
+  margin:0px 15px;
+}

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Exchanger</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+  <header style="text-align: center">
+    <span> Курс доллара: <span class = "us"> </span></span>
+    <span> Курс евро: <span class = "eu"> </span></span>
+  </header>
+  <div class="main_div">
+  <div>
+    <input type = "text" value = "0" id = "f_id"/>
+    <select class = "sel1">
+      <option value = "UAH" >UAH</option>
+      <option value = "USD">USD</option>
+      <option value = "EUR">EUR</option>
+    </select>
+
+  </div>
+  <div>
+    <input type = "text" value = "0" id = "s_id"/>
+    <select class = "sel2">
+      <option value = "UAH" >UAH</option>
+      <option value = "USD">USD</option>
+      <option value = "EUR">EUR</option>
+    </select>
+
+  </div>
+  </div>
+</body>
+<script>
+  const rates = {}
+  const elementUSD = document.querySelector('span.us')
+  const elementEUR = document.querySelector('span.eu')
+
+  const input = document.querySelector("#f_id")
+  const input2 = document.querySelector("#s_id")
+
+  const select1 = document.querySelector(".sel1")
+  const select2 = document.querySelector(".sel2")
+
+
+  async function getCur(){
+    const response = await fetch("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
+    const data = await response.json();
+    const result = await data;
+    console.log(result)
+    rates.USD = result[25]
+    rates.EUR = result[32]
+    rates.UAH =  {r030: 1, txt: 'Гривна', rate: 1, cc: 'UAH'}
+    console.log(rates)
+    elementEUR.textContent = rates.EUR.rate.toFixed(2);
+    elementUSD.textContent = rates.USD.rate.toFixed(2);
+
+  }
+  getCur();
+
+
+  input.oninput = () => {
+    let curs = parseFloat(rates[select1.value].rate / rates[select2.value].rate)
+    input2.value = (parseFloat(input.value) * curs).toFixed(2);
+  }
+  input2.oninput = () => {
+    let c = parseFloat(rates[select2.value].rate / rates[select1.value].rate)
+    input.value = (parseFloat(input2.value) * c).toFixed(2);
+  }
+</script>
+</html>
